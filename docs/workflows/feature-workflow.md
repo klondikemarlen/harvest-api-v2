@@ -18,3 +18,20 @@
 5. Verify the version remotely with `gem list --remote marlens-harvest-api-v2 --exact --all`. If RubyGems is stale, verify `https://rubygems.org/api/v2/rubygems/marlens-harvest-api-v2/versions/<version>.json`.
 6. Install the published gem into a temporary `GEM_HOME` and smoke-check `ruby -e 'require "marlens/harvest_api_v2"; puts Marlens::HarvestApiV2::VERSION'`.
 7. Delete the local `.gem` artifact and any one-off smoke helper before committing follow-up work.
+
+## Downstream adoption audit
+
+Known consumers:
+
+- `klondikemarlen/harvest-time-off`
+
+After publishing each API version:
+
+1. Check every consumer's released dependency constraint against the exact published version.
+2. Check whether consumer source must change to use the released behavior.
+3. Record the exact version, compatibility result, and any required downstream work on the API release issue. Do not modify a downstream repository or open a downstream request from this audit.
+4. Add future consumers to the list above before auditing them.
+
+| Published version | Consumer | Audit result |
+| --- | --- | --- |
+| `0.2.0` | `klondikemarlen/harvest-time-off` | Its `~> 0.1` dependency accepts `0.2.0`; no dependency change is required. To use member-safe name resolution, replace the manager-only `active_task_assignments` call with `active_personal_task_assignments`. No downstream changes were made. |

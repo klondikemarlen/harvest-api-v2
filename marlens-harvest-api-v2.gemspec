@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "lib/harvest_api_v2/version"
+require_relative "lib/marlens/harvest_api_v2/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "harvest-api-v2"
-  spec.version = HarvestApiV2::VERSION
+  spec.name = "marlens-harvest-api-v2"
+  spec.version = Marlens::HarvestApiV2::VERSION
   spec.authors = ["Marlen Brunner"]
   spec.email = ["klondikemarlen@gmail.com"]
   spec.summary = "Small Ruby client for Harvest API V2."

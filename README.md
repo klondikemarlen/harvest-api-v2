@@ -1,9 +1,10 @@
-# Harvest API V2
+# Marlens Harvest API V2
 
-Small Ruby client for the Harvest API V2. It uses Ruby's standard library and exposes a generic `Client#request` method plus the task-assignment and duration-time-entry calls used by the companion `harvest-time-off` CLI.
+Small Ruby client for the Harvest API V2. It uses Ruby's standard library and exposes `Marlens::HarvestApiV2::Client#request` plus the task-assignment and duration-time-entry calls used by the companion `harvest-time-off` CLI.
 
 ```ruby
-client = HarvestApiV2::Client.from_environment
+require "marlens/harvest_api_v2"
+client = Marlens::HarvestApiV2::Client.from_environment
 client.create_time_entry(
   project_id: 48_730_683,
   task_id: 8_083_365,

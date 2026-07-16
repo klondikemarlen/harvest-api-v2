@@ -4,10 +4,10 @@ require "json"
 require "net/http"
 require "uri"
 
-module HarvestApiV2
+module Marlens::HarvestApiV2
   class Client
     API_URL = "https://api.harvestapp.com".freeze
-    USER_AGENT = "harvest-api-v2/#{VERSION}".freeze
+    USER_AGENT = "marlens-harvest-api-v2/#{VERSION}".freeze
 
     def self.from_environment(environment: ENV)
       access_token = environment.fetch("HARVEST_ACCESS_TOKEN", "")

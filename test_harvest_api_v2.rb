@@ -7,12 +7,12 @@ require "net/http"
 require "uri"
 
 $LOAD_PATH.unshift File.expand_path("lib", __dir__)
-require "harvest_api_v2"
+require "marlens/harvest_api_v2"
 
-class HarvestApiV2Test < Minitest::Test
+class MarlensHarvestApiV2Test < Minitest::Test
   def test_lists_active_task_assignments_with_harvest_headers
     requests = []
-    client = HarvestApiV2::Client.new(
+    client = Marlens::HarvestApiV2::Client.new(
       access_token: "test-token",
       account_id: "123",
       executor: ->(request) do
@@ -31,7 +31,7 @@ class HarvestApiV2Test < Minitest::Test
 
   def test_creates_duration_time_entry
     requests = []
-    client = HarvestApiV2::Client.new(
+    client = Marlens::HarvestApiV2::Client.new(
       access_token: "test-token",
       account_id: "123",
       executor: ->(request) do
@@ -56,13 +56,13 @@ class HarvestApiV2Test < Minitest::Test
   end
 
   def test_surfaces_harvest_error_message
-    client = HarvestApiV2::Client.new(
+    client = Marlens::HarvestApiV2::Client.new(
       access_token: "test-token",
       account_id: "123",
       executor: ->(_request) { response(422, message: "Project is invalid") }
     )
 
-    error = assert_raises(HarvestApiV2::Error) { client.request(:post, "/v2/time_entries", body: {}) }
+    error = assert_raises(Marlens::HarvestApiV2::Error) { client.request(:post, "/v2/time_entries", body: {}) }
 
     assert_equal "Project is invalid", error.message
     assert_equal "422", error.status

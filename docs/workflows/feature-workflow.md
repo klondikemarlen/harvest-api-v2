@@ -34,4 +34,4 @@ After publishing each API version:
 
 | Published version | Consumer | Audit result |
 | --- | --- | --- |
-| `0.2.0` | `klondikemarlen/harvest-time-off` | Its `~> 0.1` dependency accepts `0.2.0`; no dependency change is required. To use member-safe name resolution, replace the manager-only `active_task_assignments` call with `active_personal_task_assignments`. No downstream changes were made. |
+| `0.2.0` | `klondikemarlen/harvest-time-off` | Its released `~> 0.1` dependency admitted `0.2.0`; the downstream release nevertheless tightened it to `~> 0.2` while replacing manager-only `active_task_assignments` with `active_personal_task_assignments` for member-safe name resolution. Downstream `harvest-time-off` 0.4.0 completed member-token dry-run verification. |

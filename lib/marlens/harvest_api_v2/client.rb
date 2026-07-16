@@ -47,6 +47,16 @@ module Marlens::HarvestApiV2
       request(:get, "/v2/task_assignments", params: { is_active: true, per_page: 2000 }).fetch("task_assignments")
     end
 
+    def active_personal_task_assignments
+      request(:get, "/v2/users/me/project_assignments", params: { per_page: 2000 })
+        .fetch("project_assignments")
+        .flat_map do |project_assignment|
+          project_assignment.fetch("task_assignments", []).filter_map do |task_assignment|
+            task_assignment.merge("project" => project_assignment.fetch("project")) if task_assignment["is_active"]
+          end
+        end
+    end
+
     def create_time_entry(project_id:, task_id:, spent_date:, hours:, notes: nil)
       body = { project_id:, task_id:, spent_date: spent_date.iso8601, hours: }
       body[:notes] = notes unless notes.nil? || notes.empty?

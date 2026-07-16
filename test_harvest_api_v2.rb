@@ -29,6 +29,39 @@ class MarlensHarvestApiV2Test < Minitest::Test
     assert_equal({ "is_active" => "true", "per_page" => "2000" }, URI.decode_www_form(requests.first.uri.query).to_h)
   end
 
+  def test_lists_active_personal_task_assignments_with_nested_project_assignments
+    requests = []
+    client = Marlens::HarvestApiV2::Client.new(
+      access_token: "member-token",
+      account_id: "123",
+      executor: ->(request) do
+        requests << request
+        response(
+          200,
+          project_assignments: [
+            {
+              project: { id: 48_730_683, name: "Time Off - Marlen" },
+              task_assignments: [
+                { id: 1, is_active: true, task: { id: 8_083_365, name: "Vacation / PTO" } },
+                { id: 2, is_active: false, task: { id: 8_083_366, name: "Former PTO" } }
+              ]
+            }
+          ]
+        )
+      end
+    )
+
+    assignments = client.active_personal_task_assignments
+
+    assert_equal(
+      [{ "id" => 1, "is_active" => true, "project" => { "id" => 48_730_683, "name" => "Time Off - Marlen" }, "task" => { "id" => 8_083_365, "name" => "Vacation / PTO" } }],
+      assignments
+    )
+    assert_equal "/v2/users/me/project_assignments", requests.first.uri.path
+    assert_equal "Bearer member-token", requests.first["Authorization"]
+    assert_equal({ "per_page" => "2000" }, URI.decode_www_form(requests.first.uri.query).to_h)
+  end
+
   def test_creates_duration_time_entry
     requests = []
     client = Marlens::HarvestApiV2::Client.new(
